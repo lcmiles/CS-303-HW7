@@ -5,6 +5,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class HW7 {
+    /*
+    Description: Executable function that is responsible for reading the text file and calling the functions in the Graph class that build, print, and perform BFS on the graph
+    Parameters:
+    String[] args - Runtime arguments
+    Returns: Nothing
+    Sources:
+    https://stackoverflow.com/questions/26448352/counting-the-number-of-lines-in-a-text-file-java
+    https://www.youtube.com/watch?v=X1LdtRW88c0
+    https://chat.openai.com/share/037460fb-c57f-412a-8cd0-43e7559d09d2
+    */
     public static void main(String[] args) throws Exception {
         String filename = "tinyDG.txt"; //initialize filename string variable
         try {
@@ -22,11 +32,12 @@ public class HW7 {
                     continue; //skip because addEdge() adds edges
                 }
                 else {
-                    String[] nodes = line.split(" "); //split each line at the space using a regex
-                    int node1 = Integer.parseInt(nodes[0]); //parse the int value and assign it to node1 variable
-                    int node2 = Integer.parseInt(nodes[1]); //parse the int value and assing it to node2 variable
-                    float weight = Float.parseFloat(nodes[2]); //parse the float value and assing it to weight variable
-                    graph.addEdge(node1, node2, weight); //call addEdge() on both nodes to add them to the graph
+                    line = line.replaceAll("\\s+", " ").trim(); //remove extra spaces around and between the number characters, leaving only one space between each
+                    String[] parts = line.split(" "); //split each line at the space using a regex 
+                    int node1 = Integer.parseInt(parts[0]); //parse the int value and assign it to node1
+                    int node2 = Integer.parseInt(parts[1]); //parse the int value and assign it to node2
+                    float weight = Float.parseFloat(parts[2]); //parse the float value and assign it to weight
+                    graph.addEdge(node1, node2, weight); //call addEdge() on both nodes and weight to add the weighted edge between them
                 }
             }
             reader.close();
@@ -35,7 +46,7 @@ public class HW7 {
             //TODO: add Prim's algorithm
             long timeFinal = System.nanoTime(); // records final system time in nanoseconds
             long time = timeFinal - timeInit; //calculates time taken for BFS algorithm
-            System.out.println("Breadth-First Search Time: " + time + " nanoseconds, " + (float)time/1000000 + " milliseconds, or " + (float)time/1000000000 + " seconds");
+            System.out.println("Prim's Algorithm Time: " + time + " nanoseconds, " + (float)time/1000000 + " milliseconds, or " + (float)time/1000000000 + " seconds");
         } catch (IOException e) {
             e.printStackTrace();
         }
