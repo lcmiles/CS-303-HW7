@@ -43,10 +43,13 @@ public class HW7 {
             reader.close();
             graph.printAdjList(); //call printAdjList() to print the adjacency list representation of the graph
             long timeInit = System.nanoTime(); //records initial system time in nanoseconds
-            //TODO: add Prim's algorithm
+            WeightedGraph mst = graph.findMST(); //call prim's algorithm on graph and assign it to a new WeightedGraph object
             long timeFinal = System.nanoTime(); // records final system time in nanoseconds
             long time = timeFinal - timeInit; //calculates time taken for BFS algorithm
+            System.out.println("The MST found using Prim's algoirthm:");
+            mst.printAdjList(); //print adjacency list of MST graph
             System.out.println("Prim's Algorithm Time: " + time + " nanoseconds, " + (float)time/1000000 + " milliseconds, or " + (float)time/1000000000 + " seconds");
+            System.out.println();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class WeightedGraph {
 
@@ -73,6 +74,44 @@ public class WeightedGraph {
             string.append("\n");
         }
         System.out.println(string);
+    }
+    /*
+    Description: This function implements Prim's aglorithm, finding the MST of the graph by repeatedly selecting the edge with the smallest weight, connecting visited vertices to unvisited vertices, adding them to the MST, and continuing this process until the MST contains (vertices - 1) edges or there are no more edges to consider
+    Parameters: None
+    Returns:
+    WeightedGaph mst - A WeightedGraph object that represents the found MST
+    Sources:
+    https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/
+    https://chat.openai.com/share/c6ed91be-1c2b-4dbf-b7a9-749de512e504
+    */
+    public WeightedGraph findMST() {
+        WeightedGraph mst = new WeightedGraph(vertices); //create a new graph for the MST
+        boolean[] visited = new boolean[vertices]; //initialize visited flag
+        PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(); //initialize priority queue
+
+        visited[0] = true; //set first vertex to visited because it will always be visited
+        for (Edge edge : adjList.get(0)) { //iterate through edges adjacent to first vertex
+            priorityQueue.offer(edge); //add each to the prioritt queue; the priority queue prioritizes edges with the lowest weights
+        }
+
+        while (mst.edges < vertices - 1 && !priorityQueue.isEmpty()) { //continue until the the maximum number of edges in an MST have been addded to the graph and the priority queue is empty
+            Edge minEdge = priorityQueue.poll(); //remove the edge with the lowest weight from the queue
+            int u = minEdge.getU(); //get the edges first connnected node 
+            int v = minEdge.getV(); //get the edges second connected node
+            float weight = minEdge.getWeight(); //get the edges weight
+
+            if (visited[u] && !visited[v]) { //if one edge is connected and the other is not
+                mst.addEdge(u, v, weight); //add an edge between them in the MST
+                visited[v] = true; //mark the v vertex visited because it is now included in the MST
+
+                for (Edge neighbor : adjList.get(v)) { //iterate through the edges adjacent to the vertex v
+                    if (!visited[neighbor.getV()]) { //if the other endpoint of the edge is not visited
+                        priorityQueue.offer(neighbor); //add it to the priority queue to consider it in the next iteration
+                    }
+                }
+            }
+        }
+        return mst;
     }
 
 }

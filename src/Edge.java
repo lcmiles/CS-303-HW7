@@ -1,4 +1,4 @@
-class Edge {
+class Edge implements Comparable<Edge> {
 
   private int u;
   private int v;
@@ -14,7 +14,7 @@ class Edge {
     Sources:
     https://stackoverflow.com/questions/44831436/java-implementing-weighted-graph
     */
-  public Edge(int u, int v, float weight) {
+  public Edge(int u, int v, float weight)  {
     this.u = u;
     this.v = v;
     this.weight = weight;
@@ -32,4 +32,8 @@ class Edge {
     return weight;
   }
 
+  @Override
+    public int compareTo(Edge other) { //override the compareTo class to allow edge weights to be compared
+        return Float.compare(this.weight, other.weight);  //compare edges based on their weights
+    }
 }
